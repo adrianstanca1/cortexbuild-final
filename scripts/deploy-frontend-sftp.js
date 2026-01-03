@@ -56,6 +56,8 @@ async function deployToHostinger() {
         console.log(`📂 Remote path: ${remotePath}`);
 
         console.log('🗑️  Clearing old files (keeping .htaccess)...');
+        console.log('✨ Skipping file deletion (handled by remote-clean.js)');
+        /*
         const files = await sftp.list(remotePath);
         for (const file of files) {
             if (file.name !== '.htaccess' && file.name !== '.' && file.name !== '..' && file.name !== 'api' && file.name !== 'debug.php') {
@@ -73,6 +75,7 @@ async function deployToHostinger() {
                 }
             }
         }
+        */
 
         console.log('📤 Uploading new files...');
         await uploadDirectory(sftp, localPath, remotePath);
