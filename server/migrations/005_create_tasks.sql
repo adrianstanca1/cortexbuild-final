@@ -1,0 +1,28 @@
+-- Create tasks table
+CREATE TABLE IF NOT EXISTS tasks (
+  id VARCHAR(255) PRIMARY KEY,
+  projectId VARCHAR(255) NOT NULL,
+  companyId VARCHAR(255) NOT NULL,
+  title TEXT NOT NULL,
+  description TEXT,
+  status VARCHAR(50) NOT NULL,
+  priority VARCHAR(50) NOT NULL,
+  assignedTo TEXT,
+  assigneeId VARCHAR(255),
+  assigneeName TEXT,
+  assigneeType VARCHAR(50),
+  dueDate DATETIME,
+  startDate DATETIME,
+  duration INTEGER,
+  dependencies TEXT,
+  progress INTEGER DEFAULT 0,
+  color TEXT,
+  createdBy VARCHAR(255),
+  latitude REAL,
+  longitude REAL,
+  createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+  updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (projectId) REFERENCES projects(id) ON DELETE CASCADE,
+  INDEX idx_company (companyId),
+  INDEX idx_project (projectId)
+);

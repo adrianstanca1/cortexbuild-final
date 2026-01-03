@@ -1,0 +1,67 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-lint:
+    runs-on: ubuntu-latest
+    # Only run for pushes to main or PRs from the same repository (trusted context)
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
+    
+    env:
+      # Public environment variables (safe for all contexts)
+      VITE_API_URL: "https://cortexbuildpro.com"
+      VITE_WS_URL: "wss://cortexbuildpro.com/live"
+      NODE_ENV: test
+      # Secrets are protected by the job-level 'if' condition
+      VITE_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      VITE_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
+    strategy:
+      matrix:
+        node-version: [20.x]
+        
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+
+    - name: Install Dependencies
+      run: npm ci
+
+    - name: Install Server Dependencies
+      run: |
+        cd server 
+        npm ci
+        cd ..
+
+    - name: Lint
+      run: npm run lint
+
+    - name: Type Check
+      run: npm run typecheck
+
+    - name: Build Frontend
+      if: >-
+        github.event_name == 'push' ||
+        github.event.pull_request.head.repo.full_name == github.repository
+      run: npm run build:frontend
+
+    - name: Build Backend
+      if: >-
+        github.event_name == 'push' ||
+        github.event.pull_request.head.repo.full_name == github.repository
+      run: npm run build:backend

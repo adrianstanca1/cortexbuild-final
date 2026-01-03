@@ -1,0 +1,108 @@
+-- Seed Data: Feature Definitions
+-- Description: Global feature catalog with categories and dependencies
+-- Date: 2025-12-28
+
+-- ============================================================================
+-- Feature Catalog
+-- ============================================================================
+
+-- BILLING Category
+INSERT INTO featuredefinitions (name, display_name, description, category, default_enabled) VALUES
+('billing', 'Billing & Invoicing', 'Complete billing system with invoicing, payment processing, and subscription management', 'BILLING', false),
+('payment_integration', 'Payment Integration', 'Integration with payment processors (Stripe, PayPal, etc.)', 'BILLING', false),
+('subscription_management', 'Subscription Management', 'Manage subscription plans and billing cycles', 'BILLING', false)
+
+ON CONFLICT (name) DO NOTHING;
+
+-- REPORTS Category
+INSERT INTO featuredefinitions (name, display_name, description, category, default_enabled) VALUES
+('basic_reports', 'Basic Reporting', 'Standard reports including project status and team activity', 'REPORTS', true),
+('advanced_reports', 'Advanced Reporting', 'Custom reports, dashboards, and analytics with export capabilities', 'REPORTS', false),
+('custom_dashboards', 'Custom Dashboards', 'Create and customize dashboards with widgets and charts', 'REPORTS', false),
+('scheduled_reports', 'Scheduled Reports', 'Automated report generation and email delivery', 'REPORTS', false)
+
+ON CONFLICT (name) DO NOTHING;
+
+-- INTEGRATIONS Category
+INSERT INTO featuredefinitions (name, display_name, description, category, default_enabled, requires_features) VALUES
+('integrations', 'Third-Party Integrations', 'Connect with external tools and services', 'INTEGRATIONS', false, NULL),
+('api_access', 'API Access', 'Full REST API access for custom integrations', 'INTEGRATIONS', false, NULL),
+('webhooks', 'Webhooks', 'Real-time event notifications via webhooks', 'INTEGRATIONS', false, ARRAY['api_access']),
+('oauth_integration', 'OAuth Integration', 'Single Sign-On with OAuth providers', 'INTEGRATIONS', false, NULL)
+
+ON CONFLICT (name) DO NOTHING;
+
+-- ADVANCED_RBAC Category
+INSERT INTO featuredefinitions (name, display_name, description, category, default_enabled) VALUES
+('advanced_rbac', 'Custom Roles & Permissions', 'Create custom roles with granular permission controls', 'ADVANCED_RBAC', false),
+('team_hierarchies', 'Team Hierarchies', 'Organizational hierarchies and department management', 'ADVANCED_RBAC', false),
+('approval_workflows', 'Approval Workflows', 'Multi-level approval processes for critical actions', 'ADVANCED_RBAC', false)
+
+ON CONFLICT (name) DO NOTHING;
+
+-- SECURITY Category
+INSERT INTO featuredefinitions (name, display_name, description, category, default_enabled, requires_features) VALUES
+('sso', 'Single Sign-On', 'Enterprise SSO with SAML 2.0 and OAuth 2.0', 'SECURITY', false, NULL),
+('mfa_enforcement', 'MFA Enforcement', 'Require multi-factor authentication for all users', 'SECURITY', false, NULL),
+('advanced_security', 'Advanced Security', 'IP whitelisting, session management, and security policies', 'SECURITY', false, NULL),
+('audit_logs', 'Audit Log Exports', 'Export detailed audit logs for compliance and security analysis', 'SECURITY', false, NULL)
+
+ON CONFLICT (name) DO NOTHING;
+
+-- BRANDING Category
+INSERT INTO featuredefinitions (name, display_name, description, category, default_enabled) VALUES
+('white_label', 'White Label Branding', 'Custom branding with logo, colors, and domain', 'BRANDING', false),
+('custom_domain', 'Custom Domain', 'Use your own domain for the application', 'BRANDING', false),
+('email_templates', 'Custom Email Templates', 'Customize email notifications with your branding', 'BRANDING', false)
+
+ON CONFLICT (name) DO NOTHING;
+
+-- COMPLIANCE Category
+INSERT INTO featuredefinitions (name, display_name, description, category, default_enabled) VALUES
+('compliance_reports', 'Compliance Reporting', 'Generate compliance reports for various regulations', 'COMPLIANCE', false),
+('data_retention', 'Data Retention Policies', 'Configure automatic data retention and deletion policies', 'COMPLIANCE', false),
+('gdpr_tools', 'GDPR Tools', 'GDPR compliance tools including data export and deletion', 'COMPLIANCE', false)
+
+ON CONFLICT (name) DO NOTHING;
+
+-- COLLABORATION Category
+INSERT INTO featuredefinitions (name, display_name, description, category, default_enabled) VALUES
+('real_time_collaboration', 'Real-Time Collaboration', 'Real-time updates and presence indicators', 'COLLABORATION', true),
+('comments_mentions', 'Comments & Mentions', 'Comment on items and mention team members', 'COLLABORATION', true),
+('file_sharing', 'File Sharing', 'Share files and documents with team members', 'COLLABORATION', true),
+('task_dependencies', 'Task Dependencies', 'Create and manage task dependencies and blockers', 'COLLABORATION', false)
+
+ON CONFLICT (name) DO NOTHING;
+
+-- AUTOMATION Category
+INSERT INTO featuredefinitions (name, display_name, description, category, default_enabled) VALUES
+('workflow_automation', 'Workflow Automation', 'Automate workflows with rules and triggers', 'AUTOMATION', false),
+('email_automation', 'Email Automation', 'Automated email notifications and reminders', 'AUTOMATION', true),
+('status_automation', 'Status Automation', 'Automatic status updates based on conditions', 'AUTOMATION', false)
+
+ON CONFLICT (name) DO NOTHING;
+
+-- STORAGE Category
+INSERT INTO featuredefinitions (name, display_name, description, category, default_enabled) VALUES
+('document_storage', 'Document Storage', 'Store and manage documents and files', 'STORAGE', true),
+('version_control', 'Version Control', 'Track document versions and history', 'STORAGE', false),
+('advanced_search', 'Advanced Search', 'Full-text search across all documents and data', 'STORAGE', false)
+
+ON CONFLICT (name) DO NOTHING;
+
+-- AI_FEATURES Category
+INSERT INTO featuredefinitions (name, display_name, description, category, default_enabled) VALUES
+('ai_assistant', 'AI Assistant', 'AI-powered assistant for productivity and insights', 'AI_FEATURES', false),
+('predictive_analytics', 'Predictive Analytics', 'AI-driven predictions and recommendations', 'AI_FEATURES', false),
+('smart_suggestions', 'Smart Suggestions', 'Contextual suggestions powered by AI', 'AI_FEATURES', false)
+
+ON CONFLICT (name) DO NOTHING;
+
+-- Log seed completion
+DO $$
+DECLARE
+  feature_count INTEGER;
+BEGIN
+  SELECT COUNT(*) INTO feature_count FROM featuredefinitions;
+  RAISE NOTICE 'Feature definitions seeded successfully! Total features: %', feature_count;
+END $$;

@@ -1,0 +1,11 @@
+RewriteEngine On
+
+# Allow diagnostic probes to skip the Node.js proxy
+RewriteRule ^debug\.php$ - [L]
+RewriteRule ^log_reader\.php$ - [L]
+
+# Proxy to Node.js backend on port 3001
+RewriteRule ^$ http://localhost:3001/ [P,L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ http://localhost:3001/$1 [P,L]

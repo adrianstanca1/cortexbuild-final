@@ -1,0 +1,58 @@
+name: Deploy Backend to Cloud Run (DISABLED - Using Hostinger)
+
+# This workflow is disabled because the backend is now hosted on Hostinger.
+# To re-enable, uncomment the push trigger and ensure GCP_SA_KEY secret is set.
+on:
+  # push:
+  #   branches:
+  #     - main
+  workflow_dispatch:  # Manual trigger only
+
+env:
+  # GCP_PROJECT_ID is moved to job-level to satisfy linter constraints 
+  REGION: us-central1 
+  SERVICE_NAME: buildpro-app
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch' || github.actor == 'cortexbuildadmin'
+    env:
+      PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+      VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+      VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+      GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - id: 'auth'
+        name: 'Authenticate to Google Cloud'
+        uses: 'google-github-actions/auth@v1'
+        with:
+          credentials_json: '${{ env.GCP_SA_KEY }}'
+
+      - name: 'Set up Cloud SDK'
+        uses: 'google-github-actions/setup-gcloud@v1'
+
+      - name: 'Submit Build to Cloud Build'
+        # Builds the image on Cloud Build, substituting the Supabase secrets into the build args
+        run: |
+          gcloud builds submit \
+            --tag gcr.io/$PROJECT_ID/$SERVICE_NAME \
+            --substitutions=_VITE_SUPABASE_URL=$VITE_SUPABASE_URL,_VITE_SUPABASE_ANON_KEY=$VITE_SUPABASE_ANON_KEY \
+            .
+
+      - name: 'Deploy to Cloud Run'
+        run: |
+          gcloud run deploy $SERVICE_NAME \
+            --image gcr.io/$PROJECT_ID/$SERVICE_NAME \
+            --region $REGION \
+            --platform managed \
+            --allow-unauthenticated \
+            --set-env-vars=NODE_ENV=production,VITE_SUPABASE_URL=$VITE_SUPABASE_URL,VITE_SUPABASE_ANON_KEY=$VITE_SUPABASE_ANON_KEY

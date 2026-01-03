@@ -1,0 +1,25 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+  
+  # Force HTTPS
+  RewriteCond %{HTTPS} off
+  RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+  # WebSocket Support - Detect upgrade request and use ws:// protocol
+  RewriteCond %{HTTP:Upgrade} =websocket [NC]
+  RewriteCond %{HTTP:Connection} =upgrade [NC]
+  RewriteRule ^live/?(.*)$ ws://127.0.0.1:3001/live$1 [P,L]
+
+  # Regular HTTP proxy for /live (non-WebSocket)
+  RewriteRule ^live/?(.*)$ http://127.0.0.1:3001/live$1 [P,L]
+
+  # Proxy API requests
+  RewriteRule ^api/(.*)$ http://127.0.0.1:3001/api/$1 [P,L]
+
+  # SPA Routing
+  RewriteRule ^index\.html$ - [L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . /index.html [L]
+</IfModule>

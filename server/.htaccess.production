@@ -1,0 +1,14 @@
+RewriteEngine On
+
+# Allow diagnostic probes to skip the Node.js proxy
+RewriteRule ^debug\.php$ - [L]
+RewriteRule ^log_reader\.php$ - [L]
+
+# Proxy WebSocket requests to /live endpoint
+RewriteRule ^live/(.*)$ ws://127.0.0.1:8080/live/$1 [P,L]
+
+# Proxy all other requests to Node.js app on port 8080 with /api prefix
+RewriteRule ^$ http://127.0.0.1:8080/api/ [P,L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ http://127.0.0.1:8080/api/$1 [P,L]

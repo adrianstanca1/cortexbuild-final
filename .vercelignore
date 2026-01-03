@@ -1,0 +1,13 @@
+# Vercel Ignore List
+.vercel
+node_modules
+server/node_modules
+dist
+build
+coverage
+.git
+.DS_Store
+*.log
+*.sqlite
+.env
+.env.*

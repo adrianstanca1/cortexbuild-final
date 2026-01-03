@@ -1,0 +1,29 @@
+# Complete Environment Variables for Hostinger Node.js Application
+# Copy and paste these into your Hostinger Node.js app settings
+
+# Server Configuration
+PORT=3000
+NODE_ENV=production
+CORS_ORIGIN=https://cortexbuildpro.com,https://seashell-alpaca-613176.hostingersite.com
+
+# Supabase Configuration
+SUPABASE_URL=https://zpbuvuxpfemldsknerew.supabase.co
+SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpwYnV2dXhwZmVtbGRza25lcmV3Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1NjExNDMxNywiZXhwIjoyMDcxNjkwMzE3fQ.gY8kq22SiOxULPdpdhf-sz-C7V9hC2ZtPy5003UYsik
+SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpwYnV2dXhwZmVtbGRza25lcmV3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYxMTQzMTcsImV4cCI6MjA3MTY5MDMxN30.4wb8_qMaJ0hpkLEv51EWh0pRtVXD3GWWOsuCmZsOx6A
+SUPABASE_JWT_SECRET=Cumparavinde1@
+FILE_SIGNING_SECRET=Cumparavinde1@
+
+# Gemini AI
+GEMINI_API_KEY=AIzaSyC_Qa8pvQsefl5Xjjwvhg053keWRP7CveU
+
+# SendGrid (Optional)
+SENDGRID_API_KEY=placeholder-sendgrid-key
+EMAIL_FROM=noreply@buildproapp.com
+
+# MySQL Database Configuration
+DATABASE_TYPE=mysql
+DB_HOST=127.0.0.1
+DB_USER=u875310796_admin
+DB_PASSWORD=Cumparavinde1.
+DB_NAME=u875310796_cortexbuildpro
+DB_PORT=3306

@@ -1,0 +1,23 @@
+RewriteEngine On
+
+# Enable WebSocket Proxying
+# If Apache module is active, this allows persistent connections
+RewriteCond %{HTTP:Upgrade} websocket [NC]
+RewriteCond %{HTTP:Connection} upgrade [NC]
+RewriteRule ^api/live/(.*) ws://127.0.0.1:3000/api/live/$1 [P,L]
+
+# General WebSocket Fallback
+RewriteCond %{HTTP:Upgrade} websocket [NC]
+RewriteCond %{HTTP:Connection} upgrade [NC]
+RewriteRule ^api/(.*) ws://127.0.0.1:3000/api/$1 [P,L]
+
+# Proxy API requests to Node backend
+RewriteRule ^api/(.*)$ http://127.0.0.1:3000/api/$1 [P,L]
+
+# Authorization Header Propagation
+SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1
+
+# SPA Routing for React
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.html [QSA,L]

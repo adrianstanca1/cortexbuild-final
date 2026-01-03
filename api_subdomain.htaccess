@@ -1,0 +1,24 @@
+# API Subdomain Configuration - CortexBuild Pro
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Prevent potential infinite loops
+    RewriteEngine On
+
+# Allow diagnostic probes to skip the Node.js proxy
+RewriteRule ^debug\.php$ - [L]
+RewriteRule ^log_reader\.php$ - [L]
+
+# Logic for cortexbuildpro.com (Main Domain usage of /api folder)
+# Context is public_html/api, so match "health" needs to become "api/health"
+RewriteCond %{HTTP_HOST} ^(www\.)?cortexbuildpro\.com$ [NC]
+RewriteRule ^(.*)$ http://localhost:3001/api/$1 [P,L]
+
+# Logic for api.cortexbuildpro.com (Subdomain)
+# Context matches Request URI, so "api/health" passes through as "api/health"
+RewriteCond %{HTTP_HOST} ^api\.cortexbuildpro\.com$ [NC]
+RewriteRule ^(.*)$ http://localhost:3001/$1 [P,L]
+
+# Fallback (e.g. direct IP or other aliases) - assumption: identical to subdomain
+RewriteRule ^(.*)$ http://localhost:3001/$1 [P,L]
+</IfModule>

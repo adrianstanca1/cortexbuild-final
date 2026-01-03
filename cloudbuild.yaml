@@ -1,0 +1,11 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'build'
+      - '--build-arg'
+      - 'VITE_GEMINI_API_KEY=AIzaSyB42_V54enOrtGM3mlyXuoESmb39VSoiI4'
+      - '-t'
+      - 'gcr.io/gen-lang-client-0994038290/buildpro:latest'
+      - '.'
+images:
+  - 'gcr.io/gen-lang-client-0994038290/buildpro:latest'

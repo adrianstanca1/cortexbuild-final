@@ -1,0 +1,248 @@
+/* BuildPro Global Styles with Dark Mode Support */
+
+/* Import Design System */
+@import './styles/design-tokens.css';
+@import './styles/components.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* CSS Custom Properties for Theming */
+:root {
+    /* Light Theme Colors */
+    --color-primary-50: #eff6ff;
+    --color-primary-100: #dbeafe;
+    --color-primary-500: #0f5c82;
+    --color-primary-600: #0c4a6e;
+    --color-primary-900: #0c2340;
+
+    --color-success-500: #10b981;
+    --color-success-600: #059669;
+
+    --color-warning-500: #f59e0b;
+    --color-warning-600: #d97706;
+
+    --color-error-500: #ef4444;
+    --color-error-600: #dc2626;
+
+    --color-neutral-50: #fafafa;
+    --color-neutral-100: #f5f5f5;
+    --color-neutral-200: #e5e5e5;
+    --color-neutral-300: #d4d4d4;
+    --color-neutral-400: #a3a3a3;
+    --color-neutral-500: #737373;
+    --color-neutral-600: #525252;
+    --color-neutral-700: #404040;
+    --color-neutral-800: #262626;
+    --color-neutral-900: #171717;
+}
+
+.dark {
+    /* Dark Theme Colors */
+    --color-primary-50: #0c2340;
+    --color-primary-100: #0c4a6e;
+    --color-primary-500: #3b82f6;
+    --color-primary-600: #2563eb;
+    --color-primary-900: #eff6ff;
+
+    --color-success-500: #34d399;
+    --color-success-600: #10b981;
+
+    --color-warning-500: #fbbf24;
+    --color-warning-600: #f59e0b;
+
+    --color-error-500: #f87171;
+    --color-error-600: #ef4444;
+
+    --color-neutral-50: #171717;
+    --color-neutral-100: #262626;
+    --color-neutral-200: #404040;
+    --color-neutral-300: #525252;
+    --color-neutral-400: #737373;
+    --color-neutral-500: #a3a3a3;
+    --color-neutral-600: #d4d4d4;
+    --color-neutral-700: #e5e5e5;
+    --color-neutral-800: #f5f5f5;
+    --color-neutral-900: #fafafa;
+}
+
+/* Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    margin: 0;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Custom Scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #d4d4d4;
+    border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #a3a3a3;
+}
+
+.dark .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #404040;
+}
+
+.dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #525252;
+}
+
+/* Animations */
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slide-in-from-top {
+    from {
+        transform: translateY(-10px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slide-in-from-bottom {
+    from {
+        transform: translateY(10px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes zoom-in {
+    from {
+        transform: scale(0.95);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.animate-in {
+    animation-duration: 0.2s;
+    animation-timing-function: ease-out;
+    animation-fill-mode: both;
+}
+
+.fade-in {
+    animation-name: fade-in;
+}
+
+.slide-in-from-top {
+    animation-name: slide-in-from-top;
+}
+
+.slide-in-from-bottom {
+    animation-name: slide-in-from-bottom;
+}
+
+.zoom-in-95 {
+    animation-name: zoom-in;
+}
+
+/* Utility Classes */
+.transition-theme {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+/* ========================================
+   GLOBAL HIGH-CONTRAST OVERRIDES
+   Ensure ALL text is readable everywhere
+   ======================================== */
+
+/* Input placeholders - make them much darker and visible */
+input::placeholder,
+textarea::placeholder,
+select::placeholder {
+  color: #6B7280 !important;
+  opacity: 1 !important;
+}
+
+/* Labels - make them dark and bold */
+label {
+  color: #374151 !important;
+  font-weight: 500 !important;
+}
+
+/* All text inputs - ensure dark, readable text */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="tel"],
+input[type="url"],
+input[type="search"],
+textarea,
+select {
+  color: #1F2937 !important;
+}
+
+/* Override Tailwind's light gray text classes */
+.text-gray-400 {
+  color: #6B7280 !important;
+}
+
+.text-gray-500 {
+  color: #4B5563 !important;
+}
+
+.text-gray-600,
+.text-gray-700,
+.text-gray-800,
+.text-gray-900 {
+  color: #1F2937 !important;
+}
+
+/* Ensure all paragraph text is dark */
+p {
+  color: #1F2937;
+}
+
+/* Make sure disabled inputs are still readable */
+input:disabled,
+textarea:disabled,
+select:disabled {
+  color: #6B7280 !important;
+  opacity: 0.7;
+}

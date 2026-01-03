@@ -1,0 +1,6 @@
+{
+    "github-actions.workflows.pinned.workflows": [
+        ".github/workflows/ci.yml"
+    ],
+    "gitlens.launchpad.indicator.useColors": true
+}

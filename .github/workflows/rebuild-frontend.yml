@@ -1,0 +1,53 @@
+name: Rebuild Frontend (inject secrets)
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  actions: read
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    # Production environment provides additional secret protection
+    environment: production
+    
+    env:
+      # Public environment variables (safe for all contexts)
+      VITE_API_URL: "https://cortexbuildpro.com"
+      VITE_WS_URL: "wss://cortexbuildpro.com/live"
+      NODE_ENV: production
+      # Secrets are protected by environment rules and strict event filters
+      VITE_SUPABASE_URL: ${{ secrets.SUPABASE_URL || '' }}
+      VITE_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY || '' }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY || '' }}
+      DATABASE_URL: ${{ secrets.DATABASE_URL || '' }}
+      
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        env:
+          NODE_ENV: development
+        run: npm ci
+
+      - name: Build frontend
+        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+        run: npm run build:frontend
+
+      - name: Upload `dist` as artifact
+        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-dist
+          path: dist

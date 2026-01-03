@@ -1,0 +1,29 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run build:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(npm install:*)",
+      "Bash(vercel --version:*)",
+      "Bash(vercel deploy:*)",
+      "Bash(cat:*)",
+      "Bash(vercel link:*)",
+      "Bash(vercel inspect:*)",
+      "Bash(vercel --list:*)",
+      "Bash(vercel ls:*)",
+      "Bash(npm audit:*)",
+      "Bash(xargs ls:*)",
+      "Bash(find:*)",
+      "Bash(xargs:*)",
+      "Bash(curl:*)",
+      "Bash(vercel list:*)",
+      "Bash(vercel:*)",
+      "Bash(grep:*)",
+      "Bash(git checkout:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

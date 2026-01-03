@@ -1,0 +1,32 @@
+# Force HTTPS
+RewriteEngine On
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Security Headers
+Header set X-Content-Type-Options "nosniff"
+Header set X-Frame-Options "SAMEORIGIN"
+Header set X-XSS-Protection "1; mode=block"
+Header set Referrer-Policy "strict-origin-when-cross-origin"
+
+# CORS Headers for API
+Header set Access-Control-Allow-Origin "https://cortexbuildpro.com"
+Header set Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS, PATCH"
+Header set Access-Control-Allow-Headers "Content-Type, Authorization, X-Requested-With"
+Header set Access-Control-Allow-Credentials "true"
+Header set Access-Control-Max-Age "3600"
+
+# WebSocket Proxying (Handle both /live and /api/live)
+RewriteCond %{HTTP:Upgrade} =websocket [NC]
+RewriteRule ^api/live(.*) "ws://127.0.0.1:3001/live$1" [P,L]
+
+RewriteCond %{HTTP:Upgrade} =websocket [NC]
+RewriteRule ^live(.*) "ws://127.0.0.1:3001/live$1" [P,L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ http://localhost:3001/$1 [P,L]
+
+# Enable proxy
+ProxyPreserveHost On
+ProxyPass / http://localhost:3001/
+ProxyPassReverse / http://localhost:3001/

@@ -1,0 +1,46 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Prevent potential infinite loops
+    RewriteEngine On
+
+    # Force HTTPS
+    RewriteCond %{HTTPS} off
+    RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+    # Allow diagnostic probes to skip the Node.js proxy
+    RewriteRule ^debug\.php$ - [L]
+    RewriteRule ^log_reader\.php$ - [L]
+
+    # WebSocket Proxying (Handle both /live and /api/live)
+    RewriteCond %{HTTP:Upgrade} websocket [NC]
+    RewriteRule ^api/live(.*) ws://127.0.0.1:3001/api/live$1 [P,L,E=is_websocket:1]
+    
+    RewriteCond %{HTTP:Upgrade} websocket [NC]
+    RewriteRule ^live(.*) ws://127.0.0.1:3001/api/live$1 [P,L,E=is_websocket:1]
+    
+    <IfModule mod_headers.c>
+        RequestHeader set Connection "Upgrade" env=is_websocket
+        RequestHeader set Upgrade "websocket" env=is_websocket
+    </IfModule>
+
+    # Proxy to Node.js backend on default port 3001
+    # Logic for api.cortexbuildpro.com (Subdomain)
+    RewriteCond %{HTTP_HOST} ^api\.cortexbuildpro\.com$ [NC]
+    RewriteRule ^(.*)$ http://localhost:3001/$1 [P,L]
+
+    # Fallback/Default
+    RewriteRule ^(.*)$ http://localhost:3001/$1 [P,L]
+</IfModule>
+
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE application/json
+  AddOutputFilterByType DEFLATE text/html
+</IfModule>
+
+# Prevent caching of API responses and preflight requests
+<IfModule mod_headers.c>
+  Header set Cache-Control "no-cache, no-store, must-revalidate"
+  Header set Pragma "no-cache"
+  Header set Expires 0
+</IfModule>

@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./server
+    ports:
+      - "3002:3002"
+    volumes:
+      - ./server/buildpro.sqlite:/app/buildpro.sqlite
+    environment:
+      - PORT=3002
+      - DATABASE_URL=
+      - POSTGRES_URL=
+
+  frontend:
+    build:
+      context: .
+      args:
+        - VITE_API_URL=http://localhost:3002/api
+    ports:
+      - "3001:80"
+    depends_on:
+      - backend
