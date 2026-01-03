@@ -541,7 +541,7 @@ export const TenantProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
   const getTenantAuditLogs = useCallback(
     (tenantId: string) => {
-      return auditLogs.filter((log) => log.tenantId === tenantId);
+      return (Array.isArray(auditLogs) ? auditLogs : []).filter((log) => log.tenantId === tenantId);
     },
     [auditLogs]
   );

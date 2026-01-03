@@ -177,7 +177,7 @@ const SystemLogsView: React.FC = () => {
                         <div>
                             <p className="text-sm text-zinc-600 dark:text-zinc-400">Info</p>
                             <p className="text-2xl font-bold text-blue-600 mt-1">
-                                {logs.filter(l => l.severity === 'info').length}
+                                {(logs || []).filter(l => l.severity === 'info').length}
                             </p>
                         </div>
                         <AlertCircle className="w-8 h-8 text-blue-600" />
@@ -188,7 +188,7 @@ const SystemLogsView: React.FC = () => {
                         <div>
                             <p className="text-sm text-zinc-600 dark:text-zinc-400">Warnings</p>
                             <p className="text-2xl font-bold text-yellow-600 mt-1">
-                                {logs.filter(l => l.severity === 'warning').length}
+                                {(logs || []).filter(l => l.severity === 'warning').length}
                             </p>
                         </div>
                         <AlertCircle className="w-8 h-8 text-yellow-600" />
@@ -199,7 +199,7 @@ const SystemLogsView: React.FC = () => {
                         <div>
                             <p className="text-sm text-zinc-600 dark:text-zinc-400">Errors</p>
                             <p className="text-2xl font-bold text-red-600 mt-1">
-                                {logs.filter(l => l.severity === 'error').length}
+                                {(logs || []).filter(l => l.severity === 'error').length}
                             </p>
                         </div>
                         <AlertCircle className="w-8 h-8 text-red-600" />
